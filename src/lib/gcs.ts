@@ -95,3 +95,6 @@ export async function uploadFile(file: File) {
 }
 //// -------------------------  //// -------------------------
 // uploadFile().catch(console.error);
+
+// "@google-cloud/storage": "^6.12.0",
+// "@google-cloud/translate": "^8.0.2",
