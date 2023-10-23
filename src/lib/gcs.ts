@@ -4,9 +4,9 @@
  * TODO(developer): Uncomment the following lines before running the sample.
  */
 // const fs = require("fs");
-import {createReadStream, createWriteStream} from "fs";
+import { createReadStream, createWriteStream } from "fs";
 // The ID of your GCS bucket
-const bucketName = "translate-pdf-1";
+// const bucketName = "translate-pdf-1";
 
 // const url = "https://arxiv.org/pdf/2310.09313.pdf";
 
@@ -14,30 +14,22 @@ const bucketName = "translate-pdf-1";
 // const contents = JSON.parse({ try: "try", test: "test" });
 
 // The new ID for your GCS file
-const destFileName = "new-file-name";
 
 // Imports the Google Cloud Node.js client library
 // const { Storage } = require("@google-cloud/storage");
 import { Storage } from "@google-cloud/storage";
+import fs from "fs";
+// import { GoogleAuth } from "google-auth-library";
+
+const credential = JSON.parse(
+  Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS!, "base64").toString()
+);
+
+// const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!);
+// const auth = new GoogleAuth({ credentials });
 
 // Creates a client
 
-
-// async function translateText() {
-//   console.log("entering downloading(fetch)");
-//   const response = await fetch(url);
-//   //   const blob = new Blob([response.data]);
-//   const blob = await response.blob();
-//   const arraybuffer = await blob.arrayBuffer();
-//   const data = Buffer.from(arraybuffer);
-
-//   const temp_file_name = `/tmp/${Date.now().toString()}.pdf`;
-//   fs.writeFileSync(temp_file_name, data);
-//   console.log(typeof temp_file_name);
-//   return temp_file_name;
-// }
-
-// const contents = translateText();
 //// -------------------------  //// -------------------------
 
 // export async function uploadFromMemory(file: File) {
@@ -73,13 +65,38 @@ import { Storage } from "@google-cloud/storage";
 
 //// -------------------------  //// -------------------------
 
-export async function uploadFile(file: File) {
-  const storage = new Storage();
-  // const {createReadStream} = file
-  const options = {
-    destination: destFileName,
-    // Blob:
+export async function uploadFile(url: string) {
+  try {
+    
+  console.log("entering downloading(fetch)");
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const arraybuffer = await blob.arrayBuffer();
+  const data = Buffer.from(arraybuffer);
+  //   readFile(url, (error, data) => {
+  //     if (error) throw error;
+  //     console.log(data);
+  //   });
+  const temp_file_name = `${Date.now().toString()}.pdf`;
+  fs.writeFileSync(temp_file_name, data);
+  console.log("finish write temp file: " + temp_file_name);
 
+  const storage = new Storage({
+    projectId: credential.project_id,
+    // important
+    credentials: {
+      client_email: credential.client_email,
+      private_key: credential.private_key,
+    },
+  });
+  // const {createReadStream} = file
+  const bucketName = "chat-translate-pdf";
+
+  const options = {
+    destination: temp_file_name,
+    MimeType: "application/pdf",
+
+    // Blob:
     // Optional:
     // Set a generation-match precondition to avoid potential race conditions
     // and data corruptions. The request to upload is aborted if the object's
@@ -89,9 +106,16 @@ export async function uploadFile(file: File) {
     // generation-match precondition using its generation number.
     // preconditionOpts: {ifGenerationMatch: generationMatchPrecondition},
   };
-  console.log(file)
-  await storage.bucket(bucketName).file(destFileName).createWriteStream()// .upload(file: File);
-  console.log(`${destFileName} uploaded to ${bucketName}`);
+  await storage.bucket(bucketName).upload(temp_file_name, options);
+  console.log(`${temp_file_name} uploaded to ${bucketName}`);
+  // await storage.bucket(bucketName).file(destFileName).createWriteStream()// .upload(file: File);
+  // console.log(`${destFileName} uploaded to ${bucketName}`);
+
+  return temp_file_name;
+} catch (error) {
+    console.log(error)
+    return null
+}
 }
 //// -------------------------  //// -------------------------
 // uploadFile().catch(console.error);

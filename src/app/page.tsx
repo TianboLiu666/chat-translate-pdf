@@ -1,5 +1,6 @@
 import FileURLUpload from "@/components/FileURLUpload";
 import FileUpload from "@/components/FileUpload";
+import TranslationFileURLUpload from "@/components/TranslationFileURLUpload";
 import { Button } from "@/components/ui/button";
 // import axios from "axios";
 
@@ -17,7 +18,8 @@ export default async function Home() {
           </div>
 
           <FileURLUpload />
-          <FileUpload />
+          {/* <FileUpload /> */}
+          <TranslationFileURLUpload />
         </div>
       </div>
       {/* <Button>click</Button> */}

@@ -9,21 +9,21 @@ import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Inbox, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 // import { uploadFile } from "@/lib/gcs";
 
 type Props = {};
 
 // let url = "https://arxiv.org/pdf/2310.07778.pdf";
 
-const FileURLUpload = (props: Props) => {
+const TranslationFileURLUpload = (props: Props) => {
   const router = useRouter();
   const [url, SetUrl] = React.useState("");
   const [uploading, setUploading] = React.useState(false);
   const { mutate, isLoading } = useMutation({
     mutationFn: async (url: string) => {
-      const response = await axios.post("/api/create-chat-url", { url });
-      console.log(response.data.length);
+      const response = await axios.post("/api/translate", { url });
+      console.log(response);
       console.log(response.data);
       return response.data;
     },
@@ -43,12 +43,20 @@ const FileURLUpload = (props: Props) => {
         return;
       }
       mutate(url, {
-        onSuccess: ({ length }: { length: number }) => {
-          console.log("on Success:" + length);
+        onSuccess: ({
+          file_name,
+          translated_file_name,
+          bucketName,
+        }: {
+          file_name: string;
+          translated_file_name: string;
+          bucketName: string;
+        }) => {
+          console.log("on Success:" + file_name);
           //   const new_url = url.replace(/[^a-zA-Z0-9]/g, "");
-          const new_url = url.replace(/\//g, "--");
-          toast.success("success:" + length);
-          router.push(`/chat/${new_url}`);
+          // const new_url = url.replace(/\//g, "--");
+          // toast.success("success:" + length);
+          router.push(`/translate/${bucketName}/${file_name}`);
         },
         onError: (err) => {
           toast.error("Error creating chat");
@@ -88,7 +96,7 @@ const FileURLUpload = (props: Props) => {
 
   return (
     <div className="flex flex-col">
-      <form className="mt-3 rounded-lg flex flex-col" onSubmit={onSubmit}>
+      <form className="mt-3 rounded-lg flex flex-row" onSubmit={onSubmit}>
         <input
           type="text"
           placeholder="enter your pdf url"
@@ -98,13 +106,13 @@ const FileURLUpload = (props: Props) => {
         {/* <input type="submit"/> */}
 
         <Button type="submit" className="w-1/2">
-          Chat
+          Translate
         </Button>
       </form>
       {uploading || isLoading ? (
         <>
           <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
-          <p className="mt-2 text-sm text-blue-500">Spilling Tea to GPT...</p>
+          <p className="mt-2 text-sm text-blue-500">Translating.....</p>
         </>
       ) : (
         <>
@@ -115,7 +123,6 @@ const FileURLUpload = (props: Props) => {
         </>
       )}
     </div>
-
     // {/* <form onSubmit={handleSubmit2}>
     //   {/* <h1>React File Upload</h1> */}
     //   <input type="file" onChange={handleChange2} />
@@ -124,4 +131,4 @@ const FileURLUpload = (props: Props) => {
   );
 };
 
-export default FileURLUpload;
+export default TranslationFileURLUpload;
