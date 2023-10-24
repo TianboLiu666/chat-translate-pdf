@@ -53,11 +53,11 @@ const TranslationFileURLUpload = (props: Props) => {
           bucketName: string;
         }) => {
           console.log("on Success:" + file_name);
-          file_name = encodeURIComponent(file_name);
+          // file_name = encodeURIComponent(file_name);
           //   const new_url = url.replace(/[^a-zA-Z0-9]/g, "");
           // const new_url = url.replace(/\//g, "--");
           // toast.success("success:" + length);
-          router.push(`/translate/${bucketName}/${file_name}`);
+          router.push(`/translate/${bucketName}/${file_name.slice(4)}`);
         },
         onError: (err) => {
           toast.error("Error creating chat");

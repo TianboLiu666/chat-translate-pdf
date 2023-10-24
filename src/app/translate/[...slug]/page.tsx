@@ -7,17 +7,19 @@ type Props = {
 };
 
 const page = ({ params: { slug } }: Props) => {
-  const [bucketName, filename] = slug;
-  const file_name = decodeURIComponent(filename);
-  // https://storage.googleapis.com/chat-translate-pdf/1698022609327.pdf
+  const [bucketName, file_name] = slug;
+  // const file_name = decodeURIComponent(filename);
+  // https://storage.googleapis.com/chat-translate-pdf/tmp/1698124058435.pdf
   const file_url =
-    "https://storage.googleapis.com/" + bucketName + "/" + file_name;
+    "https://storage.googleapis.com/" + bucketName + "/tmp/" + file_name;
+  console.log(file_url);
   // https://storage.googleapis.com/chat-translate-pdf/tmp/translated1698122069491.pdf
   const translated_file_url =
     "https://storage.googleapis.com/" +
     bucketName +
     "/tmp/translated" +
-    file_name.slice(4);
+    file_name;
+  console.log(translated_file_url);
   return (
     <div className="flex min-h-full overflow-scroll">
       {/* <div className="">{real_url}</div> */}
