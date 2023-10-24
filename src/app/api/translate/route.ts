@@ -12,7 +12,7 @@ export async function POST(req: Request, res: Response) {
     console.log(body);
     const { url } = body;
     console.log(url);
-    const file_name = await uploadFile(url);
+    const file_name = await uploadFile(url) as string;
     if (!file_name) {
       throw Error("Cannot upload file to GCS");
     }

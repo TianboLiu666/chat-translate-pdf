@@ -13,9 +13,9 @@ export default async function Home() {
             <h1 className="mr-3 text-5xl font-semibold">Chat With any PDF</h1>
           </div>
 
-          <div className="flex mt-3">
+          {/* <div className="flex mt-3">
             <Button>Go to chats</Button>
-          </div>
+          </div> */}
 
           <FileURLUpload />
           {/* <FileUpload /> */}

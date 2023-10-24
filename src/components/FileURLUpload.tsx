@@ -43,11 +43,11 @@ const FileURLUpload = (props: Props) => {
         return;
       }
       mutate(url, {
-        onSuccess: ({ length }: { length: number }) => {
+        onSuccess: () => {
           console.log("on Success:" + length);
           //   const new_url = url.replace(/[^a-zA-Z0-9]/g, "");
           const new_url = url.replace(/\//g, "--");
-          toast.success("success:" + length);
+          toast.success("success create chat");
           router.push(`/chat/${new_url}`);
         },
         onError: (err) => {
@@ -110,7 +110,7 @@ const FileURLUpload = (props: Props) => {
         <>
           {/* <Inbox className="w-10 h-10 text-blue-500" /> */}
           <p className="mt-2 text-sm text-slate-400">
-            URL format: https://arxiv.org/pdf/2004.07606.pdf
+            URL format: https://arxiv.org/pdf/2307.12966.pdf
           </p>
         </>
       )}

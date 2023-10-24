@@ -22,9 +22,10 @@ const translationClient = new TranslationServiceClient({
     private_key: credential.private_key,
   },
 });
+// gs://chat-translate-pdf//tmp/1698120544175.pdf
 
 export async function translateDocument(file_name: string) {
-  const inputUri = "gs://" + bucketName + "/" + file_name;
+  const inputUri =  "gs://" + bucketName + "/" + file_name;
   const documentInputConfig = {
     gcsSource: {
       inputUri: inputUri,
@@ -50,7 +51,7 @@ export async function translateDocument(file_name: string) {
 
   console.log(`Response: Mime Type - ${response.documentTranslation.mimeType}`);
 
-  const translated_file_name = "translated" + file_name;
+  const translated_file_name = "/tmp/translated" + file_name.slice(4);
   fs.writeFileSync(translated_file_name, translation as Buffer);
   console.log("finish write temp file: " + translated_file_name);
 
@@ -66,7 +67,7 @@ export async function translateDocument(file_name: string) {
   });
 
   const options = {
-    destination: translated_file_name,
+    destination: translated_file_name.slice(1),
     MimeType: "application/pdf",
   };
   await storage.bucket(bucketName).upload(translated_file_name, options);

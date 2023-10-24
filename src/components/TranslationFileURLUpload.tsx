@@ -53,6 +53,7 @@ const TranslationFileURLUpload = (props: Props) => {
           bucketName: string;
         }) => {
           console.log("on Success:" + file_name);
+          file_name = encodeURIComponent(file_name);
           //   const new_url = url.replace(/[^a-zA-Z0-9]/g, "");
           // const new_url = url.replace(/\//g, "--");
           // toast.success("success:" + length);
@@ -118,7 +119,7 @@ const TranslationFileURLUpload = (props: Props) => {
         <>
           {/* <Inbox className="w-10 h-10 text-blue-500" /> */}
           <p className="mt-2 text-sm text-slate-400">
-            URL format: https://arxiv.org/pdf/2004.07606.pdf
+            URL format: https://arxiv.org/pdf/2307.12966.pdf
           </p>
         </>
       )}
