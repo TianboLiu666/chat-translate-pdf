@@ -1,5 +1,6 @@
 import fs from "fs";
 import { Storage } from "@google-cloud/storage";
+import { TLSSocket } from "tls";
 
 // const projectId = "play-with-pdf";
 const projectId = "chat-translate-pdf";
@@ -24,8 +25,8 @@ const translationClient = new TranslationServiceClient({
 });
 // gs://chat-translate-pdf//tmp/1698120544175.pdf
 
-export async function translateDocument(file_name: string) {
-  const inputUri =  "gs://" + bucketName + "/" + file_name;
+export async function translateDocument(file_name: string, TL: string) {
+  const inputUri = "gs://" + bucketName + "/" + file_name;
   const documentInputConfig = {
     gcsSource: {
       inputUri: inputUri,
@@ -35,8 +36,9 @@ export async function translateDocument(file_name: string) {
   const request = {
     parent: translationClient.locationPath(projectId, location),
     documentInputConfig: documentInputConfig,
-    sourceLanguageCode: "en-US",
-    targetLanguageCode: "zh",
+    // sourceLanguageCode: "en-US",
+    targetLanguageCode: TL,
+    // targetLanguageCode: "zh",
   };
 
   // Run request

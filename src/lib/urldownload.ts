@@ -53,6 +53,34 @@ export async function downloadFromURL(url: string) {
   return documents[0];
 }
 
+export async function loadGCStoPinecone(file: File) {
+  // var reader = new FileReader();
+  const arraybuffer = await file.arrayBuffer();
+  // console.log(arraybuffer);
+  // // const arraybuffer = reader.readAsArrayBuffer(file);
+  const data = Buffer.from(arraybuffer);
+
+  const temp_file_name = `/tmp/${Date.now().toString()}.pdf`;
+  fs.writeFileSync(temp_file_name, data);
+  console.log("finish write temp file: " + temp_file_name);
+
+  const loader = new PDFLoader(temp_file_name);
+  const pages = (await loader.load()) as PDFPage[];
+
+  const documents = await Promise.all(
+    pages.map((page) => prepareDocument(page))
+  );
+
+  const vectors = await Promise.all(documents.flat().map(embedDocument));
+
+  const client = await getPineconeClient();
+  const prineconeIndex = await client.index("play-with-pdf");
+
+  console.log("Inserting vectors into pinecone");
+  await prineconeIndex.upsert(vectors);
+  return documents[0];
+}
+
 async function embedDocument(doc: Document) {
   try {
     const embeddings = await getEmbeddings(doc.pageContent);

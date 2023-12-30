@@ -8,61 +8,39 @@ import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { loadGCStoPinecone } from "@/lib/urldownload";
+type Props = {
+  targetLanguage: string;
+};
 
-import { arrayBuffer } from "stream/consumers";
-
-const FileUpload = () => {
+const TranslationFileUpload = ({ targetLanguage }: Props) => {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: FormData) => {
-      // console.log(file.arrayBuffer());
-      // console.log(file.text());
-      // let arraybuffer;
-      // console.log(file.stream);
-      // const reader = new FileReader();
-      // reader.onload = (event) => {
-      //   arraybuffer = event.target?.result;
-      // };
-      // reader.readAsArrayBuffer(file);
-      // console.log(arraybuffer);
-
-      // const arraybuffer = file.arrayBuffer();
-      // console.log(typeof arraybuffer);
-      // const arraybuffer = reader.readAsText(file);
-
-      const response = await fetch("/api/create-chat-file", {
+      const response = await fetch("/api/translate", {
         method: "POST",
         body: data,
       });
-      // const response = await axios.post("/api/create-chat-file", {
-      //   data,
-      // });
-      // uploadDropzoneFile(file)
-      // loadGCStoPinecone(file)
       console.log("success");
-      // return response.body;
+      //   console.log(response.json());
+      const result = await response.json();
+      console.log(result);
+      return result;
     },
   });
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
-      console.log(acceptedFiles);
+      //   console.log(acceptedFiles);
       const file = acceptedFiles[0];
-      console.log(file);
-      console.log(typeof file);
-      console.log(Object.keys(file));
-      // const file_path = file.path;
-      // console.log(file_path);
+
       if (file.size > 10 * 1024 * 1024) {
         // bigger than 10mb
         toast.error("File too large(bigger than 10mb)");
         // alert("Please upload a smaller file");
         return;
       }
-      // let arraybuffer;
 
       try {
         setUploading(true);
@@ -72,31 +50,29 @@ const FileUpload = () => {
           //   alert("something went wrong");
           return;
         }
+        console.log(file.name);
         const data = new FormData();
         data.set("file", file);
-        // const reader = new FileReader();
-        // reader.onload = (event) => {
-        //   var arraybuffer = event.target?.result as ArrayBuffer;
-        //   console.log(typeof arraybuffer);
-        //   console.log(arraybuffer.byteLength);
-        // };
-        const file_name = file.name.replace(" ", "-");
+        data.set("targetlanguage", targetLanguage);
+        // const file_name = file.name.replace(" ", "-");
         mutate(data, {
-          onSuccess: () => {
-            toast.success("Chat created");
-            console.log(typeof file);
-            // console.log(`/chat/${chat_id}`);
-            router.push(`/chat/${file_name}`);
+          onSuccess: ({
+            file_name,
+            translated_file_name,
+            bucketName,
+          }: {
+            file_name: string;
+            translated_file_name: string;
+            bucketName: string;
+          }) => {
+            console.log("on Success:" + file_name);
+            router.push(`/translate/${bucketName}/${file_name.slice(4)}`);
           },
           onError: (err) => {
             toast.error("Error creating chat");
             console.log(err);
           },
         });
-        // return arraybuffer
-        // console.log(arraybuffer);
-        // reader.readAsArrayBuffer(file);
-        //   // console.log("data", data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -131,4 +107,4 @@ const FileUpload = () => {
   );
 };
 
-export default FileUpload;
+export default TranslationFileUpload;

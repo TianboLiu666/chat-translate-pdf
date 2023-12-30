@@ -1,25 +1,38 @@
-import { uploadFile } from "@/lib/gcs";
+import { uploadDropzoneFile, uploadFile } from "@/lib/gcs";
 import { translateDocument } from "@/lib/translatedocument";
 
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 // import  from 'pdf-parse'
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: NextRequest) {
   try {
     // const url = "https://arxiv.org/pdf/2310.07778.pdf";
     // console.log(req);
-    const body = await req.json();
-    console.log(body);
-    const { url } = body;
-    console.log(url);
-    const file_name = await uploadFile(url) as string;
+    const contentType = req.headers.get("content-type");
+    let file_name;
+    let TL;
+    if (contentType === "application/json") {
+      const body = await req.json();
+      console.log(body);
+      const { url, targetLanguage } = body;
+      console.log(url);
+      file_name = (await uploadFile(url)) as string;
+      TL = targetLanguage;
+    } else {
+      const data = await req.formData();
+      const file = data.get("file") as File;
+      const targetlanguage = data.get("targetlanguage") as string;
+      TL = targetlanguage;
+      file_name = await uploadDropzoneFile(file);
+      // file_name = file.name.replace(' ','-')
+    }
     if (!file_name) {
       throw Error("Cannot upload file to GCS");
     }
-    const translation_info = await translateDocument(file_name);
+    const translation_info = await translateDocument(file_name, TL!);
 
     console.log("successful translation");
-    // console.log(typeof pages);
+
     return NextResponse.json(translation_info, { status: 200 });
   } catch (error) {
     console.log(error);

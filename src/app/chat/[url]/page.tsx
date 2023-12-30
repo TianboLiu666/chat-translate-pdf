@@ -9,7 +9,12 @@ type Props = {
 
 const Page = ({ params: { url } }: Props) => {
   // const real_url = decodeURIComponent(url.replace(/--/g, "/"));
-  const real_url = decodeURIComponent(url.replace(/--/g, "/"));
+  let real_url
+  if (/^http.*\.pdf$/i.test(url)) {
+    real_url = decodeURIComponent(url.replace(/--/g, "/"));
+  } else {
+    real_url = "https://storage.googleapis.com/" + 'chat-translate-pdf' + "/tmp/" + url;
+  }
   // console.log(typeof real_url);
   console.log(real_url);
 

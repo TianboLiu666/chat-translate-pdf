@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request, res: Response) {
   try {
     // const url = "https://arxiv.org/pdf/2310.07778.pdf";
-    console.log(req);
+    // console.log(req);
     const body = await req.json();
     console.log(body);
     const { url } = body;

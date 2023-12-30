@@ -2,7 +2,7 @@
 import axios from "axios";
 import React from "react";
 import { Button } from "./ui/button";
-// import fs from "fs";
+
 // import { downloadFromURL } from "@/lib/urldownload";
 // import { setDefaultResultOrder } from "dns";
 
@@ -12,17 +12,22 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 // import { uploadFile } from "@/lib/gcs";
 
-type Props = {};
+type Props = {
+  targetLanguage: string;
+};
 
 // let url = "https://arxiv.org/pdf/2310.07778.pdf";
 
-const TranslationFileURLUpload = (props: Props) => {
+const TranslationFileURLUpload = ({ targetLanguage }: Props) => {
   const router = useRouter();
   const [url, SetUrl] = React.useState("");
   const [uploading, setUploading] = React.useState(false);
   const { mutate, isLoading } = useMutation({
     mutationFn: async (url: string) => {
-      const response = await axios.post("/api/translate", { url });
+      const response = await axios.post("/api/translate", {
+        url,
+        targetLanguage,
+      });
       console.log(response);
       console.log(response.data);
       return response.data;
