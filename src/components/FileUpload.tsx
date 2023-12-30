@@ -1,16 +1,16 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+// import axios from "axios";
 import { Inbox, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { loadGCStoPinecone } from "@/lib/urldownload";
+// import { loadGCStoPinecone } from "@/lib/urldownload";
 
-import { arrayBuffer } from "stream/consumers";
+// import { arrayBuffer } from "stream/consumers";
 
 const FileUpload = () => {
   const router = useRouter();

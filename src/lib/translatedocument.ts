@@ -1,6 +1,6 @@
 import fs from "fs";
 import { Storage } from "@google-cloud/storage";
-import { TLSSocket } from "tls";
+// import { TLSSocket } from "tls";
 
 // const projectId = "play-with-pdf";
 const projectId = "chat-translate-pdf";

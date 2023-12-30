@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+// import axios from "axios";
 import { Inbox, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";

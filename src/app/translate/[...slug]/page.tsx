@@ -12,14 +12,14 @@ const page = ({ params: { slug } }: Props) => {
   // https://storage.googleapis.com/chat-translate-pdf/tmp/1698124058435.pdf
   const file_url =
     "https://storage.googleapis.com/" + bucketName + "/tmp/" + file_name;
-  console.log(file_url);
+  // console.log(file_url);
   // https://storage.googleapis.com/chat-translate-pdf/tmp/translated1698122069491.pdf
   const translated_file_url =
     "https://storage.googleapis.com/" +
     bucketName +
     "/tmp/translated" +
     file_name;
-  console.log(translated_file_url);
+  // console.log(translated_file_url);
   return (
     <div className="flex min-h-full overflow-scroll">
       {/* <div className="">{real_url}</div> */}
