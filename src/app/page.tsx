@@ -11,7 +11,7 @@ export default async function Home() {
       <div className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex itmes-center mb-5">
-            <h1 className="mr-3 ml-0 text-6xl font-semibold">I'd Like to</h1>
+            <h1 className="mr-3 ml-0 text-6xl font-semibold">I&apos;d Like to</h1>
           </div>
 
           {/* <div className="flex mt-3">
