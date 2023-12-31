@@ -4,7 +4,7 @@
  * TODO(developer): Uncomment the following lines before running the sample.
  */
 // const fs = require("fs");
-import { createReadStream, createWriteStream } from "fs";
+// import { createReadStream, createWriteStream } from "fs";
 // The ID of your GCS bucket
 // const bucketName = "translate-pdf-1";
 
