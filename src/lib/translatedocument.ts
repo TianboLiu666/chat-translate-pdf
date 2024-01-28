@@ -3,17 +3,17 @@ import { Storage } from "@google-cloud/storage";
 // import { TLSSocket } from "tls";
 
 // const projectId = "play-with-pdf";
-const projectId = "chat-translate-pdf";
+// const projectId = "chat-translate-pdf";
 const location = "global";
 
-const bucketName = "chat-translate-pdf";
+const bucketName = "chat-translate-pdf-2";
 // Imports the Google Cloud Translation library
 const { TranslationServiceClient } = require("@google-cloud/translate").v3beta1;
 
 const credential = JSON.parse(
   Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS!, "base64").toString()
 );
-
+const projectId = credential.project_id;
 // Instantiates a client
 const translationClient = new TranslationServiceClient({
   projectId: credential.project_id,

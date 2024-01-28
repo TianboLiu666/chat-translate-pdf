@@ -13,7 +13,7 @@ const Page = ({ params: { url } }: Props) => {
   if (/^http.*\.pdf$/i.test(url)) {
     real_url = decodeURIComponent(url.replace(/--/g, "/"));
   } else {
-    real_url = "https://storage.googleapis.com/" + 'chat-translate-pdf' + "/tmp/" + url;
+    real_url = "https://storage.googleapis.com/" + 'chat-translate-pdf-2' + "/tmp/" + url;
   }
   // console.log(typeof real_url);
   console.log(real_url);

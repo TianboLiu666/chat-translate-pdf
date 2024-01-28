@@ -13,7 +13,7 @@ const storage = new Storage({
     },
   });
   // const {createReadStream} = file
-  const bucketName = "chat-translate-pdf";
+const bucketName = "chat-translate-pdf-2";
 
   
 export async function uploadDropzoneFile(file: File) {

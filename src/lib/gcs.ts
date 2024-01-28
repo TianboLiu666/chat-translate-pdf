@@ -71,7 +71,7 @@ const storage = new Storage({
   },
 });
 // const {createReadStream} = file
-const bucketName = "chat-translate-pdf";
+const bucketName = "chat-translate-pdf-2";
 
 //// -------------------------  //// -------------------------
 
@@ -99,7 +99,7 @@ export async function uploadFile(url: string) {
       },
     });
     // const {createReadStream} = file
-    const bucketName = "chat-translate-pdf";
+    const bucketName = "chat-translate-pdf-2"; /////////////////
 
     const options = {
       destination: temp_file_name.slice(1),
