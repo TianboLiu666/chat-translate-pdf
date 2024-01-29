@@ -1,3 +1,12 @@
+# Chat-Translate PDFs
+
+There are two ways to upload you PDFs, you can drop you file directly from you computer or you can paste the PDF URL, for example, https://arxiv.org/pdf/2307.12966.pdf.  Note the URL has to start with http and end with .pdf.
+
+![Chat](assets/chatpdf-1.png)
+![Translate](assets/chatpdf-2.png)
+
+--------------
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
